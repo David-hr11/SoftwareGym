@@ -1,0 +1,602 @@
+/* ===== Tema negro y verde sobre Bootstrap 5.3 ===== */
+:root,
+[data-bs-theme="dark"] {
+  --green: #2dff72;
+  --green-dark: #12b84a;
+
+  --bs-body-bg: #000;
+  --bs-body-color: #f2f5f3;
+  --bs-secondary-color: #8d9a91;
+  --bs-border-color: #1f2b22;
+  --bs-primary: #2dff72;
+  --bs-primary-rgb: 45, 255, 114;
+  --bs-link-color: #2dff72;
+  --bs-link-color-rgb: 45, 255, 114;
+  --bs-link-hover-color: #12b84a;
+  --bs-body-font-family: "Barlow", system-ui, sans-serif;
+}
+
+h1, h2, h3, .offcanvas-title, .modal-title {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  line-height: 1;
+}
+
+html { scroll-behavior: smooth; }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+
+/* Botones con los colores del gimnasio */
+.btn-primary {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #2dff72;
+  --bs-btn-border-color: #2dff72;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #5bff8f;
+  --bs-btn-hover-border-color: #5bff8f;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #12b84a;
+  --bs-btn-active-border-color: #12b84a;
+  --bs-btn-focus-shadow-rgb: 45, 255, 114;
+  font-weight: 600;
+}
+.btn-primary:hover { box-shadow: 0 0 24px rgba(45, 255, 114, 0.55); }
+
+.logo-dot {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 14px var(--green);
+  animation: latido 1.6s ease-in-out infinite;
+}
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.35); }
+}
+
+/* ===== Botón de hamburguesa (arriba a la derecha) ===== */
+.btn-menu {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1030;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+}
+.btn-menu:hover,
+.btn-menu:focus-visible { background: rgba(45, 255, 114, 0.14); box-shadow: 0 0 18px rgba(45, 255, 114, 0.4); }
+.burger { display: grid; gap: 5px; }
+.burger i { display: block; width: 1.4rem; height: 2px; background: var(--green); border-radius: 2px; }
+
+/* ===== Menú lateral derecho ===== */
+.menu-lateral {
+  --bs-offcanvas-width: 17rem;
+  --bs-offcanvas-bg: #0b0e0c;
+  --bs-offcanvas-border-color: var(--green);
+  --bs-offcanvas-border-width: 1px;
+  box-shadow: -10px 0 50px rgba(45, 255, 114, 0.12);
+}
+.menu-lateral .offcanvas-title { font-size: 2rem; font-weight: 800; display: flex; align-items: center; }
+.menu-lateral .btn-close { filter: invert(1) grayscale(1) brightness(1.6); }
+
+/* ===== Pantalla principal ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 5rem 0 7rem;
+  background:
+    radial-gradient(55rem 28rem at 80% 55%, rgba(45, 255, 114, 0.16), transparent 70%),
+    #000;
+}
+.eyebrow {
+  margin-bottom: 1rem;
+  color: var(--green);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+.hero h1 {
+  font-size: clamp(5rem, 17vw, 12rem);
+  font-weight: 800;
+  line-height: 0.88;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.green { color: var(--green); text-shadow: 0 0 40px rgba(45, 255, 114, 0.45); }
+.hero .lead { max-width: 30rem; font-size: clamp(1.15rem, 2.4vw, 1.5rem); }
+.valores { margin-top: 1.5rem; color: var(--bs-secondary-color); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.9rem; }
+.valores span { color: var(--green); margin: 0 0.4rem; }
+
+/* Línea de pulso decorativa */
+.pulse {
+  position: absolute;
+  left: 0;
+  bottom: 3%;
+  width: 100%;
+  height: 8rem;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.pulse path {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 8px rgba(45, 255, 114, 0.8));
+  animation: trazo 3s ease-out 0.3s forwards;
+}
+@keyframes trazo { to { stroke-dashoffset: 0; } }
+
+.footer { padding: 3rem 0; border-top: 1px solid var(--bs-border-color); color: var(--bs-secondary-color); font-size: 0.9rem; }
+
+/* ===== Formulario y aviso ===== */
+.modal-content { background: #0d100e; border: 1px solid var(--green); box-shadow: 0 0 60px rgba(45, 255, 114, 0.2); }
+.modal-title { font-size: 2.2rem; font-weight: 700; }
+.form-control:focus,
+.form-select:focus { border-color: #2dff72; box-shadow: 0 0 0 0.25rem rgba(45, 255, 114, 0.25); }
+.toast-green { background: var(--green); color: #000; }
+.toast-green .btn-close { filter: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .logo-dot { animation: none; }
+  .pulse path { animation: none; stroke-dashoffset: 0; }
+}
+
+/* ===== Logo del menú lateral ===== */
+
+.menu-lateral .offcanvas-title {
+  display: flex;
+  align-items: center;
+}
+
+.logo-menu {
+  display: block;
+  width: 150px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ===== Acceso destacado MyGym ===== */
+.btn-mygym {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  padding: .85rem 1rem;
+  color: #000;
+  background: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 14px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 28px rgba(45, 255, 114, .16);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn-mygym:hover, .btn-mygym:focus-visible {
+  color: #000;
+  background: #6aff98;
+  transform: translateY(-2px);
+  box-shadow: 0 0 26px rgba(45, 255, 114, .38);
+}
+.mygym-icon { font-size: 1.15rem; line-height: 1; }
+
+/* ===== Botón Inscríbete al fondo del navbar ===== */
+
+.menu-lateral .offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.menu-lateral .offcanvas-body nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.menu-lateral .offcanvas-body nav ul {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Empuja Inscríbete hasta abajo */
+.menu-lateral .offcanvas-body nav ul li:last-child {
+  margin-top: auto !important;
+  padding-top: 2rem;
+}
+
+/* Estilo azul del botón */
+.menu-lateral #Inscribirse {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+
+  background: #1677ff;
+  border: 1px solid #1677ff;
+  color: #fff;
+
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  box-shadow: 0 8px 25px rgba(22, 119, 255, 0.2);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.menu-lateral #Inscribirse:hover {
+  background: #4092ff;
+  border-color: #4092ff;
+  color: #fff;
+
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(22, 119, 255, 0.4);
+}
+/* ===== Carrusel de instalaciones ===== */
+.instalaciones {
+  padding: clamp(4rem, 9vw, 8rem) 0;
+  background: linear-gradient(180deg, #050805 0%, #0a100c 100%);
+  border-top: 1px solid rgba(45, 255, 114, .15);
+}
+.instalaciones-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.instalaciones h2 {
+  margin: 0;
+  font-size: clamp(2.8rem, 7vw, 5.7rem);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.instalaciones-copy {
+  max-width: 22rem;
+  margin: 0 0 .5rem;
+  color: var(--bs-secondary-color);
+  font-size: 1.1rem;
+}
+#carouselInstalaciones {
+  overflow: hidden;
+  border: 1px solid rgba(45, 255, 114, .25);
+  border-radius: 26px;
+  background: #050705;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .5), 0 0 35px rgba(45, 255, 114, .06);
+}
+#carouselInstalaciones .carousel-item { height: clamp(320px, 52vw, 620px); }
+#carouselInstalaciones .carousel-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.68), transparent 75%), linear-gradient(0deg, rgba(0,0,0,.6), transparent 55%);
+  pointer-events: none;
+}
+#carouselInstalaciones .carousel-item img { height: 100%; object-fit: cover; filter: saturate(.8); }
+#carouselInstalaciones .carousel-caption {
+  z-index: 2;
+  left: 8%; right: auto; bottom: 12%;
+  max-width: 70%;
+  text-align: left;
+}
+#carouselInstalaciones .carousel-caption span {
+  color: var(--green);
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+}
+#carouselInstalaciones .carousel-caption h3 {
+  margin: .45rem 0 0;
+  font-size: clamp(2.3rem, 6vw, 5.4rem);
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 0 3px 24px #000;
+}
+#carouselInstalaciones .carousel-indicators { z-index: 3; margin-bottom: 1.25rem; }
+#carouselInstalaciones .carousel-indicators [data-bs-target] {
+  width: 2.3rem; height: 4px; border: 0; border-radius: 10px;
+  background-color: rgba(255,255,255,.45);
+}
+#carouselInstalaciones .carousel-indicators .active { background-color: var(--green); }
+#carouselInstalaciones .carousel-control-prev,
+#carouselInstalaciones .carousel-control-next { z-index: 3; width: 8%; opacity: 1; }
+.carousel-arrow {
+  display: grid; place-items: center;
+  width: 3.2rem; height: 3.2rem;
+  color: var(--green); background: rgba(0,0,0,.72);
+  border: 1px solid rgba(45,255,114,.6); border-radius: 50%;
+  font-size: 1.8rem; line-height: 1;
+  transition: background .2s ease, transform .2s ease;
+}
+.carousel-control-prev:hover .carousel-arrow { background: var(--green); color: #000; transform: translateX(-3px); }
+.carousel-control-next:hover .carousel-arrow { background: var(--green); color: #000; transform: translateX(3px); }
+
+@media (max-width: 700px) {
+  .instalaciones-heading { display: block; }
+  .instalaciones-copy { margin-top: 1rem; }
+  #carouselInstalaciones .carousel-caption { left: 7%; bottom: 12%; max-width: 82%; }
+  #carouselInstalaciones .carousel-control-prev,
+  #carouselInstalaciones .carousel-control-next { width: 14%; }
+  .carousel-arrow { width: 2.5rem; height: 2.5rem; font-size: 1.4rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-mygym, .carousel-arrow { transition: none; }
+}
+
+/* =========================================
+   SECCIÓN NUESTROS PLANES
+========================================= */
+
+.planes {
+  background: #0a0f1a;
+  color: #fff;
+  padding: 100px 0 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Encabezado de la sección */
+
+.planes-heading {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 55px;
+}
+
+.planes-heading h2 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.planes-subtitulo {
+  color: #a9b0bd;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Distribución de las tarjetas */
+
+.planes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+  align-items: stretch;
+}
+
+/* Tarjeta individual */
+
+.plan-card {
+  background: #111824;
+  border: 1px solid #273141;
+  border-radius: 22px;
+  padding: 35px 30px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  border-color: #39ff14;
+}
+
+/* Plan Premium: tarjeta más destacada */
+
+.plan-premium {
+  background: linear-gradient(160deg, #17251b 0%, #111824 55%);
+  border: 2px solid #39ff14;
+  box-shadow: 0 0 35px rgba(57, 255, 20, 0.08);
+}
+
+.plan-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #39ff14;
+  color: #0a0f1a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 8px 13px;
+  border-radius: 50px;
+  margin-bottom: 22px;
+}
+
+/* Títulos y descripciones */
+
+.plan-card h3 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.plan-descripcion {
+  color: #a9b0bd;
+  line-height: 1.6;
+  min-height: 78px;
+  margin-bottom: 25px;
+}
+
+/* Precios */
+
+.plan-precio {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 25px;
+}
+
+.plan-moneda {
+  color: #39ff14;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.plan-cantidad {
+  color: #fff;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(2.8rem, 4vw, 3.7rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.plan-periodo {
+  color: #a9b0bd;
+  font-size: 0.95rem;
+}
+
+/* Separador */
+
+.plan-divider {
+  height: 1px;
+  background: #293342;
+  margin-bottom: 25px;
+}
+
+/* Lista de beneficios */
+
+.plan-beneficios {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 35px;
+}
+
+.plan-beneficios li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 17px;
+  color: #d5dbe5;
+  line-height: 1.5;
+}
+
+.plan-beneficios li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #39ff14;
+  font-weight: 800;
+}
+
+/* Botón de inscripción */
+
+.btn-plan {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+  padding: 15px 20px;
+  border-radius: 12px;
+  background: #39ff14;
+  color: #0a0f1a;
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-plan:hover {
+  background: #75ff5b;
+  color: #0a0f1a;
+  transform: translateY(-2px);
+}
+
+.btn-plan span {
+  font-size: 1.2rem;
+}
+
+/* Nota inferior */
+
+.planes-nota {
+  color: #7f8999;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 30px 0 0;
+}
+
+/* Adaptación a tablets */
+
+@media (max-width: 991px) {
+  .planes {
+    padding: 75px 0;
+  }
+
+  .planes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plan-premium {
+    grid-column: 1 / -1;
+  }
+
+  .plan-descripcion {
+    min-height: auto;
+  }
+}
+
+/* Adaptación a celulares */
+
+@media (max-width: 575px) {
+  .planes {
+    padding: 60px 0;
+  }
+
+  .planes-heading {
+    margin-bottom: 35px;
+  }
+
+  .planes-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .plan-premium {
+    grid-column: auto;
+  }
+
+  .plan-card {
+    padding: 28px 23px;
+  }
+
+  .plan-cantidad {
+    font-size: 3.2rem;
+  }
+}

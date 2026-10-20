@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulso Gym</title>
+  <link
+    rel="icon"
+    ype="image/png"
+      href="img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 (primero Bootstrap, después nuestros estilos para poder sobrescribirlo) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Botón de hamburguesa: abre el menú lateral derecho -->
+  <button id="btnMenu" class="btn btn-menu" type="button"
+          data-bs-toggle="offcanvas" data-bs-target="#menuLateral"
+          aria-controls="menuLateral" aria-label="Abrir menú">
+    <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+
+  <!-- Menú lateral derecho (Offcanvas de Bootstrap).
+       Sin fondo oscuro y sin bloquear el scroll para que se vea al inicio sin estorbar. -->
+  <aside class="offcanvas offcanvas-end menu-lateral" tabindex="-1" id="menuLateral"
+         data-bs-backdrop="false" data-bs-scroll="true" aria-labelledby="menuLateralTitulo">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title" id="menuLateralTitulo">
+        <a href="index.html" aria-label="Ir a la página principal de Pulso Gym">
+          <img
+            src="img/logo.png"
+            alt="Pulso Gym - Inicio"
+            class="logo-menu">
+        </a>
+      </h2>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar menú"></button>
+    </div>
+    <div class="offcanvas-body">
+      <nav aria-label="Principal">
+        <ul class="nav flex-column gap-2">
+          <li class="nav-item">
+            <button class="btn btn-mygym w-100" type="button" id="btnLogin"><span class="mygym-icon" aria-hidden="true">↗</span> MyGym</button>
+            <p class="form-text mt-2 mb-0">Tu espacio personal: entrenamientos, progreso y membresía.</p>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-primary w-100" type="button" id="btnEntrenador">Entrenadores</button>
+            <p class="form-text mt-2 mb-0">Acceso para entrenadores.</p>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-primary w-100" type="button" id="btnAdmin">Administración</button>
+            <p class="form-text mt-2 mb-0">Acceso para administradores.</p>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-primary w-100" type="button" id="Horarios">Horarios</button>
+            <p class="form-text mt-2 mb-0">Cronograma de horarios para clases.</p>
+          </li>
+           <li class="nav-item">
+            <button class="btn btn-primary w-100" type="button" id="Horarios">Contactanos</button>
+          </li>
+          <li class="nav-item">
+            <a href="inscripcion.html" class="btn btn-primary w-100" id="Inscribirse">Inscríbete</a>
+            <p class="form-text mt-2 mb-0">Empieza ya tu cambio.</p>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container-xl">
+        <div class="row">
+          <div class="col-lg-8 col-xl-7">
+            <p class="eyebrow">Entrena con propósito</p>
+            <h1>Pulso<br><span class="green">Gym</span></h1>
+            <p class="lead">Cada latido cuenta. Hoy es un buen día para superar tu marca de ayer.</p>
+            <p class="valores">Fuerza <span aria-hidden="true">·</span> Constancia <span aria-hidden="true">·</span> Resultados</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Línea de pulso cardiaco: va con el nombre del gimnasio -->
+      <svg class="pulse" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path pathLength="1" d="M0 100 H380 l20 -12 l20 12 H470 l16 -78 l32 160 l26 -122 l16 40 H1200"/>
+      </svg>
+    </section>
+  </main>
+
+
+    <!-- Carrusel de instalaciones -->
+    <section class="instalaciones" id="instalaciones" aria-labelledby="instalacionesTitulo">
+      <div class="container-xl">
+        <div class="instalaciones-heading">
+          <div>
+            <p class="eyebrow">Conoce Pulso</p>
+            <h2 id="instalacionesTitulo">Nuestras <span class="green">instalaciones</span></h2>
+          </div>
+          <p class="instalaciones-copy">Un espacio diseñado para entrenar, avanzar y superar tus propios límites.</p>
+        </div>
+
+        <div id="carouselInstalaciones" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselInstalaciones" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Mostrar zona de fuerza"></button>
+            <button type="button" data-bs-target="#carouselInstalaciones" data-bs-slide-to="1" aria-label="Mostrar zona de cardio"></button>
+            <button type="button" data-bs-target="#carouselInstalaciones" data-bs-slide-to="2" aria-label="Mostrar zona de entrenamiento"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=85" class="d-block w-100" alt="Área de entrenamiento con pesas y máquinas" loading="lazy">
+              <div class="carousel-caption"><span>01 / FUERZA</span><h3>Supera tus límites</h3></div>
+            </div>
+            <div class="carousel-item">
+              <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=1800&q=85" class="d-block w-100" alt="Zona de cardio con equipos de gimnasio" loading="lazy">
+              <div class="carousel-caption"><span>02 / CARDIO</span><h3>Encuentra tu ritmo</h3></div>
+            </div>
+            <div class="carousel-item">
+              <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=85" class="d-block w-100" alt="Espacio amplio para entrenamiento funcional" loading="lazy">
+              <div class="carousel-caption"><span>03 / MOVIMIENTO</span><h3>Entrena a tu manera</h3></div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselInstalaciones" data-bs-slide="prev" aria-label="Imagen anterior"><span class="carousel-arrow" aria-hidden="true">&#8592;</span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselInstalaciones" data-bs-slide="next" aria-label="Imagen siguiente"><span class="carousel-arrow" aria-hidden="true">&#8594;</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección: Nuestros planes -->
+    <section class="planes" id="planes" aria-labelledby="planesTitulo">
+      <div class="container-xl">
+
+        <div class="planes-heading">
+          <p class="eyebrow">Elige tu ritmo</p>
+          <h2 id="planesTitulo">
+            Nuestros <span class="green">planes</span>
+          </h2>
+          <p class="planes-subtitulo">
+            Encuentra la membresía que mejor se adapta a tus objetivos.
+            El siguiente paso para transformar tu entrenamiento comienza aquí.
+          </p>
+        </div>
+
+        <div class="planes-grid">
+
+      <!-- Plan Premium: el más caro, a la izquierda -->
+          <article class="plan-card plan-premium">
+          <div class="plan-badge">EXPERIENCIA COMPLETA</div>
+
+            <h3>Premium</h3>
+            <p class="plan-descripcion">
+             Para quienes buscan llevar su entrenamiento al siguiente nivel.
+            </p>
+
+          <div class="plan-precio">
+          <span class="plan-moneda">$</span>
+          <span class="plan-cantidad">899</span>
+          <span class="plan-periodo">/ mes</span>
+        </div>
+
+        <div class="plan-divider"></div>
+
+        <ul class="plan-beneficios">
+          <li>Acceso ilimitado al gimnasio</li>
+          <li>Área de pesas y cardio</li>
+          <li>Clases grupales incluidas</li>
+          <li>Asesoría personalizada</li>
+          <li>Acceso a todas las instalaciones</li>
+        </ul>
+
+        <a href="inscripcion.html" class="btn-plan">
+          Inscríbete ya <span aria-hidden="true">↗</span>
+        </a>
+      </article>
+
+      <!-- Plan Plus: precio intermedio, al centro -->
+      <article class="plan-card plan-plus">
+        <h3>Plus</h3>
+        <p class="plan-descripcion">
+          El equilibrio ideal entre variedad, comodidad y rendimiento.
+        </p>
+
+        <div class="plan-precio">
+          <span class="plan-moneda">$</span>
+          <span class="plan-cantidad">599</span>
+          <span class="plan-periodo">/ mes</span>
+        </div>
+
+        <div class="plan-divider"></div>
+
+        <ul class="plan-beneficios">
+          <li>Acceso ilimitado al gimnasio</li>
+          <li>Área de pesas y cardio</li>
+          <li>Clases grupales seleccionadas</li>
+          <li>Rutina de entrenamiento inicial</li>
+        </ul>
+
+        <a href="inscripcion.html" class="btn-plan">
+          Inscríbete ya <span aria-hidden="true">↗</span>
+        </a>
+      </article>
+
+      <!-- Plan Básico: el más barato, a la derecha -->
+      <article class="plan-card plan-basico">
+        <h3>Básico</h3>
+        <p class="plan-descripcion">
+          Todo lo esencial para comenzar a construir tu mejor versión.
+        </p>
+
+        <div class="plan-precio">
+          <span class="plan-moneda">$</span>
+          <span class="plan-cantidad">399</span>
+          <span class="plan-periodo">/ mes</span>
+        </div>
+
+        <div class="plan-divider"></div>
+
+        <ul class="plan-beneficios">
+          <li>Acceso al gimnasio</li>
+          <li>Área de pesas y cardio</li>
+          <li>Entrenamiento en horario regular</li>
+        </ul>
+
+        <a href="inscripcion.html" class="btn-plan">
+          Inscríbete ya <span aria-hidden="true">↗</span>
+        </a>
+      </article>
+
+    </div>
+
+    <p class="planes-nota">
+      * Precios y beneficios de ejemplo. Consulta las condiciones de cada membresía.
+    </p>
+
+  </div>
+  </section>
+
+  <footer class="footer text-center">
+    <p class="mb-0">© 2026 Pulso Gym</p>
+  </footer>
+
+  <!-- Inicio de sesión: entrenadores y administradores -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title" id="loginTitulo">Iniciar sesión</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <form id="loginForm" novalidate>
+          <div class="modal-body">
+            <p class="text-body-secondary">Acceso a tu cuenta Pulso Gym.</p>
+
+            <div class="mb-3">
+              <label for="loginRol" class="form-label">Entro como</label>
+              <select class="form-select" id="loginRol" required>
+                <option value="" selected disabled>Elige una opción</option>
+                <option value="socio">Socio / usuario</option>
+                <option value="instructor">Entrenador</option>
+                <option value="administrador">Administrador</option>
+              </select>
+              <div class="invalid-feedback">Elige tu tipo de acceso.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="loginCorreo" class="form-label">Correo</label>
+              <input type="email" class="form-control" id="loginCorreo" autocomplete="email" required>
+              <div class="invalid-feedback">Escribe un correo válido.</div>
+            </div>
+
+            <div class="mb-1">
+              <label for="loginPass" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="loginPass" autocomplete="current-password" minlength="6" required>
+              <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="submit" class="btn btn-primary w-100">Entrar a MyGym</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso emergente -->
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div id="toast" class="toast toast-green align-items-center border-0" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fw-semibold" id="toast-text"></div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

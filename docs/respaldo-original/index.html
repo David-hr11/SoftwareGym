@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulso Gym</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="#inicio" aria-label="Pulso Gym, inicio">
+      <span class="logo-dot" aria-hidden="true"></span>Pulso
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#clases">Clases</a>
+      <a href="#planes">Planes</a>
+      <a href="#portal">Mi portal</a>
+    </nav>
+    <a class="btn btn-outline" href="#portal">Iniciar sesión</a>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Llega, escanea<br><span class="green">y entrena.</span></h1>
+        <p class="lead">Tu código abre la puerta y tu rutina te espera en el celular.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#planes">Quiero inscribirme</a>
+          <a class="btn btn-ghost" href="#clases">Ver clases de hoy</a>
+        </div>
+      </div>
+
+      <div class="pass" aria-label="Ejemplo de credencial de socio">
+        <div class="pass-head">
+          <div>
+            <p class="pass-name">Carlos Ramírez</p>
+            <p class="pass-plan">Plan Plus</p>
+          </div>
+          <span class="badge-ok">Membresía activa</span>
+        </div>
+        <div class="barcode" id="barcode" role="img" aria-label="Código de barras de acceso"></div>
+        <p class="pass-code">0047 2291 8836</p>
+        <dl class="pass-stats">
+          <div><dt>Vence</dt><dd>15 nov</dd></div>
+          <div><dt>Visitas este mes</dt><dd>14</dd></div>
+          <div><dt>Racha</dt><dd>5 días</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section" id="clases" aria-labelledby="clases-t">
+      <h2 id="clases-t">Clases de la semana</h2>
+      <div class="tabs" role="tablist" aria-label="Día de la semana" id="tabs"></div>
+      <ul class="classes" id="classes" role="tabpanel"></ul>
+    </section>
+
+    <section class="section" id="planes" aria-labelledby="planes-t">
+      <h2 id="planes-t">Elige tu plan</h2>
+      <div class="plans">
+        <article class="plan">
+          <h3>Básico</h3>
+          <p class="price">$450<span>/mes</span></p>
+          <ul>
+            <li>Acceso a sala de pesas</li>
+            <li>Horario de 6:00 a 16:00</li>
+            <li>Portal con tu expediente</li>
+          </ul>
+          <a class="btn btn-outline" href="#">Elegir Básico</a>
+        </article>
+        <article class="plan plan-featured">
+          <p class="tag">El más elegido</p>
+          <h3>Plus</h3>
+          <p class="price">$650<span>/mes</span></p>
+          <ul>
+            <li>Todo el horario, sin restricciones</li>
+            <li>Clases grupales incluidas</li>
+            <li>Rutinas y dieta de tu instructor</li>
+          </ul>
+          <a class="btn btn-primary" href="#">Elegir Plus</a>
+        </article>
+        <article class="plan">
+          <h3>Anual</h3>
+          <p class="price">$5,900<span>/año</span></p>
+          <ul>
+            <li>Todo lo del plan Plus</li>
+            <li>Dos meses gratis</li>
+            <li>Cobro automático, sin filas</li>
+          </ul>
+          <a class="btn btn-outline" href="#">Elegir Anual</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="portal" aria-labelledby="portal-t">
+      <h2 id="portal-t">Tu portal de socio</h2>
+      <div class="portal">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Rutina de hoy: pierna</h3>
+            <p class="progress-text" id="routine-progress">0 de 5 completados</p>
+          </div>
+          <div class="meter" aria-hidden="true"><div class="meter-fill" id="routine-meter"></div></div>
+          <ul class="routine" id="routine"></ul>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Tu asistencia</h3>
+            <p class="progress-text">Visitas por semana</p>
+          </div>
+          <div class="bars" id="bars" role="img" aria-label="Visitas por semana en las últimas 8 semanas"></div>
+          <dl class="body-stats">
+            <div><dt>Peso</dt><dd>78.4 kg</dd></div>
+            <div><dt>Cintura</dt><dd>82 cm</dd></div>
+            <div><dt>Brazo</dt><dd>36 cm</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Pulso Gym · Ejemplo de interfaz</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
