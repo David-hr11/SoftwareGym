@@ -224,6 +224,16 @@
     </div>
   </article>
 
+  <!-- Pago por teléfono -->
+<article class="mg-card mp-telefono mb-4">
+  <div class="mp-tel-icono" aria-hidden="true"><i class="bi bi-telephone-fill"></i></div>
+  <div class="mp-tel-texto">
+    <h2>Paga por teléfono</h2>
+    <p class="text-body-secondary mb-0">Llama y un asesor te ayuda a pagar tu plan. Ten a la mano tu código de usuario: <strong id="mp-tel-codigo"></strong>.</p>
+  </div>
+  <a class="btn btn-primary mp-tel-numero" id="mp-tel" href="tel:"></a>
+</article>
+
   <!-- Cambio de plan -->
   <h2 class="mg-h2">Cambiar de plan</h2>
   <p class="text-body-secondary" id="mp-planes-nota"></p>
@@ -237,7 +247,27 @@
     </div>
     <button class="btn btn-danger" type="button" id="mp-btn-baja"></button>
   </article>
-</section>    
+
+  <!-- Asistente de pagos -->
+<div class="mp-chat">
+  <div class="mp-chat-panel" id="mp-chat-panel" role="region" aria-label="Asistente de pagos" hidden>
+    <header class="mp-chat-cab">
+      <div><strong>Asistente de pagos</strong><small>Respuestas automáticas</small></div>
+      <button class="btn-close" type="button" id="mp-chat-cerrar" aria-label="Cerrar chat"></button>
+    </header>
+    <div class="mp-chat-mensajes" id="mp-chat-mensajes" role="log" aria-live="polite"></div>
+    <div class="mp-chat-rapidas" id="mp-chat-rapidas"></div>
+    <form class="mp-chat-form" id="mp-chat-form" autocomplete="off">
+      <input class="form-control" id="mp-chat-input" placeholder="Escribe tu pregunta…" aria-label="Escribe tu pregunta" maxlength="200">
+      <button class="btn btn-primary" type="submit">Enviar</button>
+    </form>
+  </div>
+  <button class="mp-chat-burbuja" type="button" id="mp-chat-abrir" aria-expanded="false" aria-controls="mp-chat-panel" aria-label="Abrir asistente de pagos">
+    <i class="bi bi-chat-dots-fill"></i>
+  </button>
+</div>
+</section> 
+
 </main>
 <dialog class="mp-dialogo" id="mp-dialogo" aria-labelledby="mp-dlg-titulo">
   <form method="dialog">

@@ -218,3 +218,24 @@ body {
 .mp-dialogo menu { display: flex; justify-content: flex-end; gap: .5rem; margin: 1.25rem 0 0; padding: 0; }
 .mp-toast { position: fixed; bottom: 1.5rem; left: 50%; z-index: 20; transform: translateX(-50%); max-width: 90vw; padding: .7rem 1.2rem; border-radius: 2rem; background: var(--verde); color: #000; font-weight: 600; text-align: center; }
 @media (max-width: 767.98px) { .mp-toast { bottom: 5.5rem; } }
+
+/* Pago por teléfono */
+.mp-telefono { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+.mp-tel-icono { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border: 1px solid var(--verde); border-radius: 50%; color: var(--verde); font-size: 1.5rem; box-shadow: 0 0 18px rgba(45, 255, 114, .3); }
+.mp-tel-texto { flex: 1; min-width: 14rem; }
+.mp-tel-numero { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 1.8rem; font-weight: 700; letter-spacing: .04em; }
+
+/* Chat */
+.mp-chat { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 30; display: flex; flex-direction: column; align-items: flex-end; gap: .75rem; }
+.mp-chat-burbuja { display: grid; place-items: center; width: 3.6rem; height: 3.6rem; border: 0; border-radius: 50%; background: var(--verde); color: #000; font-size: 1.6rem; box-shadow: 0 0 26px rgba(45, 255, 114, .5); }
+.mp-chat-burbuja:hover { background: #5bff8f; }
+.mp-chat-panel { display: flex; flex-direction: column; width: min(22rem, calc(100vw - 2rem)); height: min(30rem, 70vh); overflow: hidden; border: 1px solid var(--verde); border-radius: 1.25rem; background: var(--panel); box-shadow: 0 0 40px rgba(45, 255, 114, .2); }
+.mp-chat-cab { display: flex; align-items: center; justify-content: space-between; padding: .8rem 1rem; border-bottom: 1px solid var(--borde); background: #000; }
+.mp-chat-cab small { display: block; color: #8d9a91; }
+.mp-chat-mensajes { flex: 1; display: flex; flex-direction: column; gap: .5rem; padding: 1rem; overflow-y: auto; }
+.mp-msg { max-width: 85%; padding: .55rem .8rem; border-radius: 1rem; font-size: .92rem; white-space: pre-line; }
+.mp-msg-bot { align-self: flex-start; border-bottom-left-radius: .25rem; background: #1a211c; }
+.mp-msg-yo { align-self: flex-end; border-bottom-right-radius: .25rem; background: var(--verde); color: #000; }
+.mp-chat-rapidas { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 1rem .75rem; }
+.mp-chat-form { display: flex; gap: .5rem; padding: .75rem; border-top: 1px solid var(--borde); }
+@media (max-width: 767.98px) { .mp-chat { right: 1rem; bottom: 5.25rem; } }

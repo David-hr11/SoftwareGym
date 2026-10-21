@@ -623,9 +623,9 @@ document.addEventListener('click', (e) => {
 // ===== Mi plan =====
 // Los planes y precios son los del index original
 const PLANES = {
-  basico: { nombre: 'Básico', precio: 450, periodo: 'mes', caracteristicas: ['Acceso a sala de pesas', 'Horario de 6:00 a 16:00', 'Portal con tu expediente'] },
-  plus: { nombre: 'Plus', precio: 650, periodo: 'mes', destacado: true, caracteristicas: ['Todo el horario, sin restricciones', 'Clases grupales incluidas', 'Rutinas y dieta de tu instructor'] },
-  anual: { nombre: 'Anual', precio: 5900, periodo: 'año', caracteristicas: ['Todo lo del plan Plus', 'Dos meses gratis', 'Cobro automático, sin filas'] },
+  basico: { nombre: 'Básico', precio: 399, periodo: 'mes', caracteristicas: ['Acceso a sala de pesas y cardio', 'Horario de 6:00 a 16:00', 'Portal con tu expediente'] },
+  plus: { nombre: 'Plus', precio: 599, periodo: 'mes', destacado: true, caracteristicas: ['Todo el horario, sin restricciones', 'Clases grupales incluidas', 'Rutinas y dieta de tu instructor'] },
+  anual: { nombre: 'Premium', precio: 899, periodo: 'mes', caracteristicas: ['Todo lo del plan Plus', 'Dos meses gratis', 'Asesoria personalizada' ] },
 };
 const CLAVE_SUSCRIPCION = 'mygym_suscripcion';
 const moneda = (n) => n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
@@ -840,6 +840,123 @@ formTarjeta.addEventListener('submit', (e) => {
   actualizar(s, 'Tarjeta agregada.');
 });
 
+// ===== Pago por teléfono y asistente de pagos =====
+// ⚠ Cambia por el número real del gimnasio (texto = como se ve, enlace = con lada internacional, sin espacios)
+const TELEFONO_PAGOS = { texto: '55 0000 0000', enlace: '+525500000000' };
+
+const enlaceTel = document.getElementById('mp-tel');
+enlaceTel.href = 'tel:' + TELEFONO_PAGOS.enlace;
+enlaceTel.textContent = TELEFONO_PAGOS.texto;
+enlaceTel.setAttribute('aria-label', 'Llamar al ' + TELEFONO_PAGOS.texto);
+document.getElementById('mp-tel-codigo').textContent = USUARIO.codigoUsuario;
+
+const chatPanel = document.getElementById('mp-chat-panel');
+const chatBurbuja = document.getElementById('mp-chat-abrir');
+const chatMensajes = document.getElementById('mp-chat-mensajes');
+const chatInput = document.getElementById('mp-chat-input');
+const RAPIDAS = [
+  ['cobro', '¿Cuánto y cuándo pago?'],
+  ['tarjeta', 'Pagar con tarjeta'],
+  ['telefono', 'Pagar por teléfono'],
+  ['plan', 'Cambiar de plan'],
+  ['persona', 'Hablar con una persona'],
+];
+
+function chatDecir(texto, quien, accion) {
+  const m = el('div', `mp-msg mp-msg-${quien}`, texto);
+  if (accion) {
+    const a = el('a', 'btn btn-primary btn-sm d-block mt-2', accion.texto);
+    a.href = accion.href;
+    m.appendChild(a);
+  }
+  chatMensajes.appendChild(m);
+  chatMensajes.scrollTop = chatMensajes.scrollHeight;
+}
+
+function cerrarChat() {
+  chatPanel.hidden = true;
+  chatBurbuja.setAttribute('aria-expanded', 'false');
+}
+
+// Detecta de qué habla la persona (sin acentos y en minúsculas)
+function claveDe(texto) {
+  const t = texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (/persona|humano|asesor|agente/.test(t)) return 'persona';
+  if (/llam|telefon|numero|celular/.test(t)) return 'telefono';
+  if (/tarjeta|debito|credito|metodo/.test(t)) return 'tarjeta';
+  if (/cuanto|cuando|fecha|costo|precio|factur|vence|debo/.test(t)) return 'cobro';
+  if (/cambi|plan|basico|plus|anual/.test(t)) return 'plan';
+  if (/pag/.test(t)) return 'pagar';
+  return null;
+}
+
+function responderChat(clave) {
+  const s = cargarSuscripcion();
+  const plan = PLANES[s.planId];
+  const tarjeta = s.tarjetas.find((t) => t.id === s.predeterminada);
+  const llamar = { texto: 'Llamar ahora', href: 'tel:' + TELEFONO_PAGOS.enlace };
+
+  if (clave === 'cobro') {
+    chatDecir(s.estado === 'activo'
+      ? `Tu plan ${plan.nombre} cuesta ${moneda(plan.precio)} / ${plan.periodo}. Tu próxima facturación es el ${fechaLarga(s.proximaFacturacion)}.`
+      : `Tu plan está dado de baja y no se renovará. Tu acceso termina el ${fechaLarga(s.proximaFacturacion)}.`, 'bot');
+  } else if (clave === 'tarjeta') {
+    chatDecir(tarjeta
+      ? `Tu método de pago es ${textoTarjeta(tarjeta)}. Abrí el apartado "Método de pago" para que agregues, cambies o elimines tarjetas.`
+      : 'Aún no tienes una tarjeta registrada. Abrí el apartado "Método de pago" para agregar una.', 'bot');
+    if (document.getElementById('mp-submenu').hidden) botonPago.click();
+    document.getElementById('mp-submenu').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (window.innerWidth < 768) cerrarChat();
+  } else if (clave === 'telefono') {
+    chatDecir(`Llama al ${TELEFONO_PAGOS.texto} y un asesor te ayudará a pagar tu plan. Ten a la mano tu código de usuario: ${USUARIO.codigoUsuario}.`, 'bot', llamar);
+  } else if (clave === 'persona') {
+    chatDecir(`Con gusto te atiende una persona por teléfono: ${TELEFONO_PAGOS.texto}.`, 'bot', llamar);
+  } else if (clave === 'plan') {
+    chatDecir(`Puedes elegir entre ${Object.values(PLANES).map((p) => p.nombre).join(', ')}. Te llevé a la sección "Cambiar de plan".`, 'bot');
+    document.getElementById('mp-planes').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.innerWidth < 768) cerrarChat();
+  } else if (clave === 'pagar') {
+    chatDecir(`Puedes pagar de dos formas:\n• Con tarjeta: administras la tarjeta en "Método de pago".\n• Por teléfono: llama al ${TELEFONO_PAGOS.texto}.`, 'bot');
+  } else {
+    chatDecir('No estoy seguro de haber entendido. Elige una opción o escribe cosas como "pagar", "teléfono", "fecha" o "plan".', 'bot');
+  }
+}
+
+function chatPreguntar(clave, texto) {
+  chatDecir(texto, 'yo');
+  setTimeout(() => responderChat(clave), 350); // pausa corta para que se sienta como conversación
+}
+
+// Botones rápidos
+RAPIDAS.forEach(([clave, etiqueta]) => {
+  const b = el('button', 'btn btn-outline-primary btn-sm', etiqueta);
+  b.type = 'button';
+  b.onclick = () => chatPreguntar(clave, etiqueta);
+  document.getElementById('mp-chat-rapidas').appendChild(b);
+});
+
+// Abrir y cerrar
+chatBurbuja.addEventListener('click', () => {
+  const abrir = chatPanel.hidden;
+  chatPanel.hidden = !abrir;
+  chatBurbuja.setAttribute('aria-expanded', String(abrir));
+  if (!abrir) return;
+  if (!chatMensajes.children.length) chatDecir('¡Hola! Soy el asistente automático de pagos de Pulso Gym. ¿En qué te ayudo?', 'bot');
+  chatInput.focus();
+});
+document.getElementById('mp-chat-cerrar').addEventListener('click', () => { cerrarChat(); chatBurbuja.focus(); });
+chatPanel.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { cerrarChat(); chatBurbuja.focus(); }
+});
+
+// Mensaje escrito
+document.getElementById('mp-chat-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const texto = chatInput.value.trim();
+  if (!texto) return;
+  chatInput.value = '';
+  chatPreguntar(claveDe(texto), texto);
+});
 
 pintarSuscripcion();
 pintarRutina();
