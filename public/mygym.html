@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyGYM · Pulso Gym</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/mygym.css">
+</head>
+<body>
+  <!-- Barra lateral fija -->
+  <nav class="mg-side" aria-label="MyGYM">
+    <a class="mg-link" href="#perfil" data-seccion="perfil"><i class="bi bi-person-circle"></i><span>Mi perfil</span></a>
+    <a class="mg-link" href="#inicio" data-seccion="inicio"><i class="bi bi-house-door-fill"></i><span>Inicio</span></a>
+    <a class="mg-link" href="#rutinas" data-seccion="rutinas"><i class="bi bi-calendar-week"></i><span>Rutinas</span></a>
+    <a class="mg-link" href="#dietas" data-seccion="dietas"><i class="bi bi-egg-fried"></i><span>Dietas</span></a>
+    <a class="mg-link" href="#plan" data-seccion="plan"><i class="bi bi-credit-card-2-front"></i><span>Mi plan</span></a>
+    <!-- Después se conectará con Firebase Auth para cerrar la sesión de verdad -->
+    <a class="btn btn-primary mg-salir" href="index.html">Cerrar sesión</a>
+  </nav>
+
+  <main class="mg-main">
+    <header class="mb-4 position-relative">
+      <h1 class="mg-titulo">MyGYM</h1>
+      <p class="text-body-secondary mb-0">Tu mejor asistente para controlar tu proceso</p>
+      <svg class="mg-pulso" viewBox="0 0 600 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 50 H200 l12 -6 l12 6 H260 l10 -40 l20 80 l16 -60 l10 20 H600"/>
+      </svg>
+    </header>
+
+    <!-- INICIO -->
+    <section class="mg-seccion" id="inicio">
+      <article class="mg-card mg-suscripcion" aria-label="Tu suscripción">
+        <dl class="mg-datos">
+          <div><dt>Usuario</dt><dd id="s-usuario"></dd></div>
+          <div><dt>Tu plan</dt><dd id="s-plan"></dd></div>
+          <div><dt>Costo</dt><dd id="s-costo"></dd></div>
+          <div><dt>Próxima facturación</dt><dd id="s-fecha"></dd></div>
+          <div><dt>Método de pago</dt><dd id="s-pago"></dd></div>
+          <div><dt>Estado</dt><dd><span class="estado" id="s-estado"></span></dd></div>
+        </dl>
+        <a class="mg-admin" href="#plan" data-seccion="plan">Administrar</a>
+      </article>
+        
+      <article class="mg-card mg-acceso" aria-label="Código de acceso">
+        <div>
+            <h2>Código de acceso</h2>
+            <p class="text-body-secondary mb-0">Muéstralo en la entrada para abrir la puerta.</p>
+        </div>
+        <div class="mg-ticket">
+        <div class="mg-barras js-barcode" role="img"></div>
+            <p class="mg-ticket-num js-codigo-num"></p>
+        </div>
+       </article>
+
+      <div class="row g-4 mt-0">
+        <div class="col-lg-8">
+          <article class="mg-card h-100">
+            <h2>Rutina actual</h2>
+            <p class="mg-dia" id="r-dia"></p>
+            <div id="r-contenido"></div>
+          </article>
+        </div>
+        <div class="col-lg-4">
+          <article class="mg-card h-100">
+            <h2>Objetivos</h2>
+            <ul class="list-unstyled mt-3 mb-0" id="objetivos"></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+<!-- Apartado rutinas-->
+   <section class="mg-seccion" id="perfil" hidden>
+  <h2 class="mg-h2">Mi perfil</h2>
+  <div class="row g-4">
+    <div class="col-lg-5 col-xl-4">
+      <article class="mg-card h-100 text-center">
+        <div class="mg-avatar" id="p-avatar"></div>
+        <p class="text-body-secondary mb-2">Código de barras de acceso</p>
+        <div class="mg-ticket mx-auto">
+          <div class="mg-barras js-barcode" role="img"></div>
+          <p class="mg-ticket-num js-codigo-num"></p>
+        </div>
+      </article>
+    </div>
+    <div class="col-lg-7 col-xl-8">
+      <article class="mg-card h-100">
+        <dl class="mg-filas mb-0">
+          <div><dt>Nombre completo</dt><dd id="p-nombre"></dd></div>
+          <div><dt>Correo electrónico</dt><dd id="p-correo"></dd></div>
+          <div>
+            <dt>Contraseña</dt>
+            <dd class="mg-pass">
+              <span aria-label="Contraseña oculta">••••••••</span>
+              <button class="btn btn-outline-primary btn-sm" type="button" disabled>Cambiar</button>
+            </dd>
+          </div>
+          <div>
+            <dt>Código de usuario</dt>
+            <dd class="mg-pass">
+              <span id="p-codigo"></span>
+              <button class="btn btn-outline-primary btn-sm" type="button" id="p-copiar">Copiar</button>
+            </dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- Apartado rutinas-->
+    <section class="mg-seccion" id="rutinas" hidden>
+  <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-2">
+    <div>
+      <h2 class="mg-h2 mb-1">Rutinas</h2>
+      <p class="text-body-secondary mb-0">Tu semana completa de entrenamiento.</p>
+    </div>
+    <div class="d-flex gap-2" id="rt-acciones"></div>
+  </div>
+  <p class="rt-aviso" id="rt-aviso" role="status"></p>
+  <div class="row g-3" id="semana"></div>
+</section>
+
+    
+     <!-- Apartado dietas-->
+    <section class="mg-seccion" id="dietas" hidden>
+  <h2 class="mg-h2">Dietas</h2>
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <article class="mg-card h-100">
+        <h2>Dieta de hoy</h2>
+        <p class="mg-dia" id="dt-hoy-dia"></p>
+        <div id="dt-hoy"></div>
+      </article>
+    </div>
+    <div class="col-lg-6">
+      <article class="mg-card h-100">
+        <h2>Reparto de la semana</h2>
+        <p class="text-body-secondary">Porcentaje de gramos por tipo de nutriente.</p>
+        <div class="dt-grafica" id="dt-grafica"></div>
+      </article>
+    </div>
+  </div>
+
+  <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mt-5 mb-2" id="dt-semana">
+    <div>
+      <h2 class="mg-h2 mb-1">Dieta semanal</h2>
+      <p class="text-body-secondary mb-0">Planea tus comidas de lunes a domingo.</p>
+    </div>
+    <div class="d-flex gap-2" id="dt-acciones"></div>
+  </div>
+  <p class="rt-aviso" id="dt-aviso" role="status"></p>
+  <div class="row g-3" id="dt-semana-lista"></div>
+
+  <datalist id="dl-comidas">
+    <option value="Desayuno"><option value="Colación"><option value="Comida"><option value="Cena">
+  </datalist>
+</section>
+
+<!-- Apartado Mi plan -->
+<section class="mg-seccion" id="plan" hidden>
+  <h2 class="mg-h2">Mi plan</h2>
+
+  <!-- Plan actual -->
+  <article class="mg-card mp-actual mb-4">
+    <div class="mp-actual-info">
+      <p class="mp-etiqueta">Tu plan actual</p>
+      <h3 class="mp-nombre" id="mp-nombre"></h3>
+      <p class="mp-precio" id="mp-precio"></p>
+      <ul class="mp-lista" id="mp-caracteristicas"></ul>
+    </div>
+    <dl class="mg-datos">
+      <div><dt>Usuario</dt><dd id="mp-usuario"></dd></div>
+      <div><dt>Próxima facturación</dt><dd id="mp-fecha"></dd></div>
+      <div><dt>Método de pago</dt><dd id="mp-pago"></dd></div>
+      <div><dt>Estado</dt><dd><span class="estado" id="mp-estado"></span></dd></div>
+    </dl>
+  </article>
+
+  <!-- Método de pago -->
+  <article class="mg-card mb-4">
+    <div class="mp-cabecera">
+      <div>
+        <h2>Método de pago</h2>
+        <p class="text-body-secondary mb-0" id="mp-pago-resumen"></p>
+      </div>
+      <button class="btn btn-outline-primary" type="button" id="mp-btn-pago" aria-expanded="false" aria-controls="mp-submenu">Modificar método de pago</button>
+    </div>
+
+    <div class="mp-submenu" id="mp-submenu" hidden>
+      <ul class="mp-tarjetas" id="mp-tarjetas"></ul>
+      <button class="btn btn-primary btn-sm" type="button" id="mp-btn-agregar">+ Agregar tarjeta</button>
+
+      <form class="mp-form" id="mp-form" hidden novalidate>
+        <div class="mp-ancho">
+          <label class="form-label" for="mp-titular">Nombre del titular</label>
+          <input class="form-control" id="mp-titular" name="titular" autocomplete="cc-name" required>
+          <div class="invalid-feedback">Escribe el nombre como aparece en la tarjeta.</div>
+        </div>
+        <div>
+          <label class="form-label" for="mp-marca">Marca</label>
+          <select class="form-select" id="mp-marca" name="marca" required>
+            <option>Visa</option><option>Mastercard</option><option>American Express</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="mp-ultimos4">Últimos 4 dígitos</label>
+          <input class="form-control" id="mp-ultimos4" name="ultimos4" inputmode="numeric" pattern="\d{4}" maxlength="4" autocomplete="off" required>
+          <div class="invalid-feedback">Escribe los 4 dígitos.</div>
+        </div>
+        <div>
+          <label class="form-label" for="mp-vence">Vencimiento</label>
+          <input class="form-control" id="mp-vence" name="vence" placeholder="MM/AA" pattern="(0[1-9]|1[0-2])/\d{2}" maxlength="5" autocomplete="cc-exp" required>
+          <div class="invalid-feedback">Usa el formato MM/AA con una fecha vigente.</div>
+        </div>
+        <p class="form-text mp-ancho mb-0">Por seguridad, esta versión de prueba solo pide los últimos 4 dígitos. El cobro real se conectará con un procesador de pagos.</p>
+        <div class="mp-ancho mp-acciones">
+          <button class="btn btn-primary" type="submit">Guardar tarjeta</button>
+          <button class="btn btn-outline-primary" type="button" id="mp-form-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </article>
+
+  <!-- Cambio de plan -->
+  <h2 class="mg-h2">Cambiar de plan</h2>
+  <p class="text-body-secondary" id="mp-planes-nota"></p>
+  <div class="row g-3 mb-4" id="mp-planes"></div>
+
+  <!-- Baja -->
+  <article class="mg-card mp-baja">
+    <div>
+      <h2>Dar de baja mi plan</h2>
+      <p class="text-body-secondary mb-0" id="mp-baja-texto"></p>
+    </div>
+    <button class="btn btn-danger" type="button" id="mp-btn-baja"></button>
+  </article>
+</section>    
+</main>
+<dialog class="mp-dialogo" id="mp-dialogo" aria-labelledby="mp-dlg-titulo">
+  <form method="dialog">
+    <h2 id="mp-dlg-titulo"></h2>
+    <p class="text-body-secondary mb-0" id="mp-dlg-texto"></p>
+    <menu>
+      <button class="btn btn-outline-primary" value="cancel">Cancelar</button>
+      <button class="btn" value="ok" id="mp-dlg-ok"></button>
+    </menu>
+  </form>
+</dialog>
+<p class="mp-toast" id="mp-toast" role="status" hidden></p>
+  <script src="js/mygym.js"></script>
+</body>
+</html>
