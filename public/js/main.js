@@ -35,29 +35,65 @@ function configurarMenu() {
   return menu;
 }
 
-// Inicio de sesión (solo validación de ejemplo; después se conectará con Firebase Auth)
+// Inicio de sesión y registro: el tipo de cuenta lo decide el sistema, no la persona
 function configurarLogin(menu) {
   const form = document.getElementById('loginForm');
   const modalEl = document.getElementById('loginModal');
   const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  const $ = (id) => document.getElementById(id);
+  const error = $('loginError');
+  let registro = false;
 
-  document.getElementById('btnLogin').addEventListener('click', () => {
+  function modo(esRegistro) {
+    registro = esRegistro;
+    $('loginTitulo').textContent = registro ? 'Crear cuenta' : 'Iniciar sesión';
+    $('loginDescripcion').textContent = registro
+      ? 'Crea tu cuenta de socio. Si eres entrenador o parte del personal, tu cuenta la crea el administrador.'
+      : 'Entra con tu correo y contraseña. Te llevamos a tu panel automáticamente.';
+    $('loginEnviar').textContent = registro ? 'Crear cuenta' : 'Entrar a MyGym';
+    $('loginCambiar').textContent = registro ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate';
+    $('grupoNombre').hidden = !registro;
+    $('grupoPass2').hidden = !registro;
+    $('loginNombre').required = registro;
+    $('loginPass2').required = registro;
+    $('loginPass').autocomplete = registro ? 'new-password' : 'current-password';
+    error.hidden = true;
+    form.classList.remove('was-validated');
+  }
+
+  $('btnLogin').addEventListener('click', async () => {
     menu.hide();
+    const ir = Cuentas.sesion() ? Cuentas.destino() : await Cuentas.restaurar();
+    if (ir) { location.href = ir; return; } // ya había sesión: va directo a su panel
+    modo(false);
     modal.show();
   });
+  $('loginCambiar').addEventListener('click', () => modo(!registro));
+  modalEl.addEventListener('hidden.bs.modal', () => { form.reset(); modo(false); });
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    error.hidden = true;
+    $('loginPass2').setCustomValidity(registro && $('loginPass2').value !== $('loginPass').value ? 'No coinciden' : '');
     form.classList.add('was-validated');
     if (!form.checkValidity()) return;
-    const rol = form.loginRol.options[form.loginRol.selectedIndex].text.toLowerCase();
-    sessionStorage.setItem('rol', form.loginRol.value); // el panel lee el rol de aquí (luego: Firebase Auth)
-    const destino = { socio: 'mygym.html', administrador: 'admin.html', recepcionista: 'admin.html' }[form.loginRol.value];
-    if (destino) { location.href = destino; return; }
-    modal.hide();
-    avisar(`Sesión iniciada como ${rol} (ejemplo)`);
-    form.reset();
-    form.classList.remove('was-validated');
+
+    const boton = $('loginEnviar');
+    boton.disabled = true;
+    try {
+      const correo = $('loginCorreo').value;
+      const pass = $('loginPass').value;
+      const r = registro
+        ? await Cuentas.registrarSocio({ nombre: $('loginNombre').value, correo, pass })
+        : await Cuentas.iniciarSesion(correo, pass);
+      if (r.error) { error.textContent = r.error; error.hidden = false; return; }
+      location.href = r.destino; // socio y entrenador → mygym.html · administrador y recepción → admin.html
+    } catch {
+      error.textContent = 'No se pudo completar. Abre el sitio desde localhost o https e inténtalo de nuevo.';
+      error.hidden = false;
+    } finally {
+      boton.disabled = false;
+    }
   });
 }
 

@@ -7,6 +7,19 @@ const USUARIO = {
   foto: '', // ruta de la imagen, por ejemplo 'img/perfil.jpg'. Vacío = se muestran las iniciales
 };
 
+// Sesión iniciada (viene de js/cuentas.js)
+const SESION = Cuentas.sesion() || {};
+const ROL = document.documentElement.dataset.rol;
+const ES_ENTRENADOR = ROL === 'instructor';
+const PREFIJO = 'u_' + (SESION.id || 'anonimo') + '_'; // cada cuenta guarda sus propios datos
+const CLAVE_OBJETIVOS = PREFIJO + 'objetivos';
+Object.assign(USUARIO, {
+  nombre: SESION.nombre || USUARIO.nombre,
+  correo: SESION.correo || USUARIO.correo,
+  codigoUsuario: SESION.codigo || USUARIO.codigoUsuario,
+  codigoBarras: SESION.codigoBarras || USUARIO.codigoBarras,
+});
+
 
 const OBJETIVOS = ['Bajar 3 kg de grasa', 'Entrenar 4 días por semana', 'Sentadilla con 100 kg'];
 
@@ -51,7 +64,7 @@ function pintarRutina() {
 
   const titulo = document.getElementById('r-dia');
   const cont = document.getElementById('r-contenido');
-  const semana = leer('mygym_rutina_semanal', null);
+  const semana = leer(CLAVE_RUTINA, null);
   cont.replaceChildren();
 
   if (!semana) {
@@ -83,7 +96,7 @@ function pintarRutina() {
 // Objetivos con checklist (se guarda en localStorage)
 function pintarObjetivos() {
   const ul = document.getElementById('objetivos');
-  const marcados = leer('mygym_objetivos', []);
+  const marcados = leer('CLAVE_OBJETIVOS', []);
   OBJETIVOS.forEach((texto, i) => {
     const li = el('li', 'form-check mb-3');
     const input = el('input', 'form-check-input');
@@ -94,7 +107,7 @@ function pintarObjetivos() {
     label.htmlFor = input.id;
     input.addEventListener('change', () => {
       const ids = [...ul.querySelectorAll('input:checked')].map((c) => Number(c.id.slice(3)));
-      localStorage.setItem('mygym_objetivos', JSON.stringify(ids));
+      localStorage.setItem('CLAVE_OBJETIVOS', JSON.stringify(ids));
     });
     li.append(input, label);
     ul.appendChild(li);
@@ -162,7 +175,7 @@ function pintarPerfil() {
 
 // ===== Rutinas: semana completa =====
 const ORDEN_SEMANA = [1, 2, 3, 4, 5, 6, 0]; // lunes a domingo (índices de DIAS)
-const CLAVE_RUTINA = 'mygym_rutina_semanal';
+const CLAVE_RUTINA = PREFIJO + 'rutina_semanal';
 let editando = false;
 let borrador = null; // copia de trabajo mientras se edita
 
@@ -344,7 +357,7 @@ function pintarSemana() {
 }
 
 // ===== Dietas =====
-const CLAVE_DIETA = 'mygym_dieta_semanal';
+const CLAVE_DIETA = PREFIJO + 'dieta_semanal';
 const CATEGORIAS = {
   proteinas: { nombre: 'Proteínas', color: '#2dff72' },
   carbohidratos: { nombre: 'Carbohidratos', color: '#ffd23f' },
@@ -627,7 +640,7 @@ const PLANES = {
   plus: { nombre: 'Plus', precio: 599, periodo: 'mes', destacado: true, caracteristicas: ['Todo el horario, sin restricciones', 'Clases grupales incluidas', 'Rutinas y dieta de tu instructor'] },
   anual: { nombre: 'Premium', precio: 899, periodo: 'mes', caracteristicas: ['Todo lo del plan Plus', 'Dos meses gratis', 'Asesoria personalizada' ] },
 };
-const CLAVE_SUSCRIPCION = 'mygym_suscripcion';
+const CLAVE_SUSCRIPCION = PREFIJO + 'suscripcion';
 const moneda = (n) => n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
 const fechaLarga = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
 const textoTarjeta = (t) => `${t.marca} •••• ${t.ultimos4}`;

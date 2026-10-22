@@ -239,3 +239,24 @@ body {
 .mp-chat-rapidas { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 1rem .75rem; }
 .mp-chat-form { display: flex; gap: .5rem; padding: .75rem; border-top: 1px solid var(--borde); }
 @media (max-width: 767.98px) { .mp-chat { right: 1rem; bottom: 5.25rem; } }
+
+/* Roles: el entrenador no ve Mi plan; el socio no ve las secciones del entrenador */
+html[data-rol="instructor"] .solo-socio,
+html:not([data-rol="instructor"]) .solo-entrenador { display: none !important; }
+.mg-side { overflow-y: auto; }
+@media (max-width: 767.98px) { .mg-side { overflow: auto hidden; } }
+
+/* Entrenador */
+.en-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: .75rem; align-items: end; }
+.en-ancho { grid-column: 1 / -1; }
+.en-tabla { overflow-x: auto; }
+.en-tabla td, .en-tabla th { white-space: nowrap; vertical-align: middle; }
+.en-tabla .en-wrap { display: block; min-width: 14rem; white-space: normal; }
+.en-acc { display: flex; gap: .35rem; }
+.en-dialogo { width: min(40rem, 94vw); max-height: 90vh; overflow: auto; }
+.en-dialogo textarea { min-height: 12rem; }
+.estado.pend { color: #ffc94d; border-color: #ffc94d; box-shadow: 0 0 14px rgba(255, 201, 77, .35); }
+.estado.rev { color: #5cc8ff; border-color: #5cc8ff; box-shadow: 0 0 14px rgba(92, 200, 255, .35); }
+
+/* Título del entrenador: "MyGYM" grande y "/ Entrenador" más pequeño en verde */
+.mg-titulo-rol { font-size: .4em; font-weight: 700; white-space: nowrap; color: var(--verde); text-shadow: none; }

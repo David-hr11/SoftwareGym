@@ -283,7 +283,7 @@ function vistaActual() {
 }
 const nav = $('#ad-nav');
 PERMITIDAS.forEach((k) => { const [t, i] = SECCIONES[k]; const a = el('a', 'mg-link'); a.href = '#' + k; a.dataset.seccion = k; a.append(el('i', 'bi ' + i), el('span', '', t)); nav.append(a); });
-const salir = el('a', 'btn btn-primary mg-salir', 'Cerrar sesión'); salir.href = 'index.html'; nav.append(salir); // luego: Firebase Auth
+const salir = el('a', 'btn btn-primary mg-salir', 'Cerrar sesión'); salir.href = 'index.html'; salir.setAttribute('data-salir', ''); nav.append(salir);
 dlg.addEventListener('close', vistaActual);
 window.addEventListener('hashchange', vistaActual);
 // La recepción ve su propio título

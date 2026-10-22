@@ -234,49 +234,52 @@
     <p class="mb-0">© 2026 Pulso Gym</p>
   </footer>
 
-  <!-- Inicio de sesión: entrenadores y administradores -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginTitulo" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header border-0 pb-0">
-          <h2 class="modal-title" id="loginTitulo">Iniciar sesión</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <form id="loginForm" novalidate>
-          <div class="modal-body">
-            <p class="text-body-secondary">Acceso a tu cuenta Pulso Gym.</p>
-
-            <div class="mb-3">
-              <label for="loginRol" class="form-label">Entro como</label>
-              <select class="form-select" id="loginRol" required>
-                <option value="" selected disabled>Elige una opción</option>
-                <option value="socio">Socio / usuario</option>
-                <option value="instructor">Entrenador</option>
-                <option value="administrador">Administrador de gym</option>
-                <option value="recepcionista">Recepcionista</option>
-              </select>
-              <div class="invalid-feedback">Elige tu tipo de acceso.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="loginCorreo" class="form-label">Correo</label>
-              <input type="email" class="form-control" id="loginCorreo" autocomplete="email" required>
-              <div class="invalid-feedback">Escribe un correo válido.</div>
-            </div>
-
-            <div class="mb-1">
-              <label for="loginPass" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="loginPass" autocomplete="current-password" minlength="6" required>
-              <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
-            </div>
-          </div>
-          <div class="modal-footer border-0 pt-0">
-            <button type="submit" class="btn btn-primary w-100">Entrar a MyGym</button>
-          </div>
-        </form>
+  <!-- Inicio de sesión y registro -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h2 class="modal-title" id="loginTitulo">Iniciar sesión</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
+      <form id="loginForm" novalidate>
+        <div class="modal-body">
+          <p class="text-body-secondary" id="loginDescripcion"></p>
+
+          <div class="mb-3" id="grupoNombre" hidden>
+            <label for="loginNombre" class="form-label">Nombre completo</label>
+            <input type="text" class="form-control" id="loginNombre" autocomplete="name" minlength="3" maxlength="60">
+            <div class="invalid-feedback">Escribe tu nombre completo.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="loginCorreo" class="form-label">Correo</label>
+            <input type="email" class="form-control" id="loginCorreo" autocomplete="email" required>
+            <div class="invalid-feedback">Escribe un correo válido.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="loginPass" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="loginPass" autocomplete="current-password" minlength="6" required>
+            <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+          </div>
+
+          <div class="mb-1" id="grupoPass2" hidden>
+            <label for="loginPass2" class="form-label">Confirmar contraseña</label>
+            <input type="password" class="form-control" id="loginPass2" autocomplete="new-password" minlength="6">
+            <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+          </div>
+
+          <div class="alert alert-danger py-2 mt-3 mb-0" id="loginError" role="alert" hidden></div>
+        </div>
+        <div class="modal-footer border-0 pt-0 flex-column align-items-stretch gap-2">
+          <button type="submit" class="btn btn-primary w-100" id="loginEnviar">Entrar a MyGym</button>
+          <button type="button" class="btn btn-link" id="loginCambiar"></button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
   <!-- Aviso emergente -->
   <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
@@ -289,6 +292,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/cuentas.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

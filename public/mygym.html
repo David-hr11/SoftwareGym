@@ -8,7 +8,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/mygym.css">
+  <script src="js/cuentas.js"></script>
+  <script>
+  (() => {
+    const s = Cuentas.exigir(['socio', 'instructor']); // sin sesión o con otro tipo de cuenta, redirige
+    document.documentElement.dataset.rol = s && s.rol === 'instructor' ? 'instructor' : 'socio';
+  })();
+  </script>
 </head>
+
 <body>
   <!-- Barra lateral fija -->
   <nav class="mg-side" aria-label="MyGYM">
@@ -16,9 +24,12 @@
     <a class="mg-link" href="#inicio" data-seccion="inicio"><i class="bi bi-house-door-fill"></i><span>Inicio</span></a>
     <a class="mg-link" href="#rutinas" data-seccion="rutinas"><i class="bi bi-calendar-week"></i><span>Rutinas</span></a>
     <a class="mg-link" href="#dietas" data-seccion="dietas"><i class="bi bi-egg-fried"></i><span>Dietas</span></a>
-    <a class="mg-link" href="#plan" data-seccion="plan"><i class="bi bi-credit-card-2-front"></i><span>Mi plan</span></a>
+    <a class="mg-link solo-entrenador" href="#pupilos" data-seccion="pupilos"><i class="bi bi-people-fill"></i><span>Pupilos</span></a>
+    <a class="mg-link solo-entrenador" href="#salones" data-seccion="salones"><i class="bi bi-door-open-fill"></i><span>Salones</span></a>
+    <a class="mg-link solo-entrenador" href="#fallas" data-seccion="fallas"><i class="bi bi-tools"></i><span>Fallas</span></a>
+    <a class="mg-link solo-socio" href="#plan" data-seccion="plan"><i class="bi bi-credit-card-2-front"></i><span>Mi plan</span></a>
     <!-- Después se conectará con Firebase Auth para cerrar la sesión de verdad -->
-    <a class="btn btn-primary mg-salir" href="index.html">Cerrar sesión</a>
+    <a class="btn btn-primary mg-salir" href="index.html" data-salir>Cerrar sesión</a>
   </nav>
 
   <main class="mg-main">
@@ -32,7 +43,7 @@
 
     <!-- INICIO -->
     <section class="mg-seccion" id="inicio">
-      <article class="mg-card mg-suscripcion" aria-label="Tu suscripción">
+      <article class="mg-card mg-suscripcion solo-socio" aria-label="Tu suscripción">
         <dl class="mg-datos">
           <div><dt>Usuario</dt><dd id="s-usuario"></dd></div>
           <div><dt>Tu plan</dt><dd id="s-plan"></dd></div>
@@ -159,8 +170,13 @@
   </datalist>
 </section>
 
+<!-- Solo para entrenadores-->
+<section class="mg-seccion solo-entrenador" id="pupilos" hidden></section>
+<section class="mg-seccion solo-entrenador" id="salones" hidden></section>
+<section class="mg-seccion solo-entrenador" id="fallas" hidden></section>
+
 <!-- Apartado Mi plan -->
-<section class="mg-seccion" id="plan" hidden>
+<section class="mg-seccion solo-socio" id="plan" hidden>
   <h2 class="mg-h2">Mi plan</h2>
 
   <!-- Plan actual -->
@@ -279,7 +295,9 @@
     </menu>
   </form>
 </dialog>
+<dialog class="mp-dialogo en-dialogo" id="en-dialogo"></dialog>
 <p class="mp-toast" id="mp-toast" role="status" hidden></p>
   <script src="js/mygym.js"></script>
+  <script src="js/entrenador.js"></script>
 </body>
 </html>
