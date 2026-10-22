@@ -1,0 +1,17 @@
+/* Extiende mygym.css: mismo estilo, solo piezas del panel de administración */
+.estado.pend { color: #ffc94d; border-color: #ffc94d; box-shadow: 0 0 14px rgba(255, 201, 77, .35); }
+.estado.rev { color: #5cc8ff; border-color: #5cc8ff; box-shadow: 0 0 14px rgba(92, 200, 255, .35); }
+.ad-dialogo { width: min(48rem, 94vw); max-height: 90vh; overflow: auto; }
+.ad-tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0; }
+.ad-tabs .btn { --bs-btn-padding-y: .25rem; }
+.ad-tabs .btn.activo { background: var(--verde); color: #000; }
+.ad-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .75rem; align-items: end; margin-bottom: 1rem; }
+.ad-form .ancho { grid-column: 1 / -1; }
+.ad-resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.ad-resumen strong { display: block; font-size: 1.8rem; }
+.ad-resumen .neg strong { color: #ff5d5d; }
+.ad-tabla { overflow-x: auto; }
+.ad-tabla td, .ad-tabla th { white-space: nowrap; vertical-align: middle; }
+.ad-acc { display: flex; gap: .35rem; }
+textarea.form-control { min-height: 8rem; }
+.ad-texto { white-space: pre-line; }

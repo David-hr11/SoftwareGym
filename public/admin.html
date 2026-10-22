@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administración · Pulso Gym</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/mygym.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <nav class="mg-side" aria-label="Administración" id="ad-nav"></nav>
+  <main class="mg-main">
+    <header class="mb-4 position-relative">
+        <h1 class="mg-titulo" id="ad-titulo">Admin</h1>
+        <p class="text-body-secondary mb-0" id="ad-sub">Panel de administración · Pulso Gym</p>
+        <svg class="mg-pulso" viewBox="0 0 600 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 50 H200 l12 -6 l12 6 H260 l10 -40 l20 80 l16 -60 l10 20 H600"/>
+      </svg>
+    </header>
+    <div id="vista"></div>
+  </main>
+  <dialog class="mp-dialogo ad-dialogo" id="ad-dialogo"></dialog>
+  <p class="mp-toast" id="mp-toast" role="status" hidden></p>
+  <script src="js/admin.js"></script>
+</body>
+</html>

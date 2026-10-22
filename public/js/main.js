@@ -51,6 +51,9 @@ function configurarLogin(menu) {
     form.classList.add('was-validated');
     if (!form.checkValidity()) return;
     const rol = form.loginRol.options[form.loginRol.selectedIndex].text.toLowerCase();
+    sessionStorage.setItem('rol', form.loginRol.value); // el panel lee el rol de aquí (luego: Firebase Auth)
+    const destino = { socio: 'mygym.html', administrador: 'admin.html', recepcionista: 'admin.html' }[form.loginRol.value];
+    if (destino) { location.href = destino; return; }
     modal.hide();
     avisar(`Sesión iniciada como ${rol} (ejemplo)`);
     form.reset();
