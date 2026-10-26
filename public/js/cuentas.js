@@ -148,5 +148,27 @@ const Cuentas = (() => {
     location.href = enlace.getAttribute('href') || 'index.html';
   });
 
-  return { sesion, destino, exigir, restaurar, cerrarSesion, iniciarSesion, registrarSocio };
+  async function listarUsuarios() {
+    try {
+      const F = await cargarFirebase();
+      await F.auth.authStateReady();
+      if (!F.auth.currentUser) return { error: 'Sesión no válida. Vuelve a iniciar sesión.' };
+      const col = F.collection(F.db, 'usuarios');
+      const consulta = sesion()?.rol === 'recepcionista'
+        ? F.query(col, F.where('rol', 'in', ['socio', 'instructor']))
+        : col;
+      const snap = await F.getDocs(consulta);
+      const usuarios = snap.docs.map((d) => {
+        const x = d.data();
+        const f = x.creadoEn?.toDate ? x.creadoEn.toDate().toLocaleDateString('sv-SE') : '';
+        return { id: d.id, ...x, creadoEn: f };
+      });
+      return { usuarios };
+    } catch (e) {
+      if (e?.code === 'permission-denied') return { error: 'No tienes permiso para ver los usuarios. Revisa las reglas de Firestore.' };
+      return { error: mensaje(e) };
+    }
+  }
+
+  return { sesion, destino, exigir, restaurar, cerrarSesion, iniciarSesion, registrarSocio, listarUsuarios };
 })();
