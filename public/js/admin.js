@@ -7,7 +7,7 @@ const SALONES = ['Salón de yoga', 'Salón funcional', 'Salón de baile'];
 // Esto solo oculta secciones en el navegador; la seguridad real se hará con Firebase Auth y requireRole en el servidor.
 const ROL = sessionStorage.getItem('rol');
 if (!['administrador', 'recepcionista'].includes(ROL)) location.replace('index.html');
-const PERMISOS = { administrador: null, recepcionista: ['socios', 'instructores', 'salones'] };
+const PERMISOS = { administrador: null, recepcionista: ['usuarios'] };
 
 const $ = (s) => document.querySelector(s);
 const iso = (d) => d.toLocaleDateString('sv-SE');
@@ -267,20 +267,96 @@ function vistaContabilidad() {
   const v = el('div'); v.append(r, tarjeta(el('h2', '', 'Nuevo movimiento'), form), tarjeta(el('h2', '', 'Movimientos'), tabla(['Fecha', 'Concepto', 'Tipo', 'Monto'], filas)));
   return v;
 }
+// ===== Usuarios registrados (leídos de Firestore) =====
+const ROLES_TXT = { socio: 'Socio', instructor: 'Instructor', administrador: 'Administrador', recepcionista: 'Recepcionista' };
+let filtroRol = 'todos';
+let busqueda = '';
+const sinAcentos = (t) => String(t ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+const ROLES_VISIBLES = ROL === 'recepcionista' ? ['socio', 'instructor'] : Object.keys(ROLES_TXT);
+
+function vistaUsuarios() {
+  let todos = [];
+  const conteo = el('p', 'text-body-secondary mb-3');
+  const lista = el('div');
+
+  const pintar = () => {
+    // Cada palabra escrita debe aparecer en algún dato del usuario (sin importar acentos ni mayúsculas)
+    const palabras = sinAcentos(busqueda).split(/\s+/).filter(Boolean);
+    const vistos = todos
+      .filter((u) => ROLES_VISIBLES.includes(u.rol))
+      .filter((u) => filtroRol === 'todos' || u.rol === filtroRol)
+      .filter((u) => {
+        const texto = sinAcentos([u.nombre, u.correo, u.codigo, u.codigoBarras, ROLES_TXT[u.rol], PLANES[u.plan]?.nombre, u.estatusPago].join(' '));
+        return palabras.every((p) => texto.includes(p));
+      })
+      .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es'));
+
+    conteo.textContent = `${vistos.length} de ${todos.length} usuario(s)`;
+    lista.replaceChildren(vistos.length
+      ? tabla(
+        ['Código', 'Nombre', 'Correo', 'Tipo', 'Plan', 'Estatus de pago', 'Registro'],
+        vistos.map((u) => [
+          u.codigo || '—', u.nombre || '—', u.correo || '—',
+          badge(ROLES_TXT[u.rol] || u.rol || 'Sin tipo', u.rol === 'socio' ? '' : 'rev'),
+          u.plan ? (PLANES[u.plan]?.nombre || u.plan) : '—',
+          u.estatusPago || '—', fecha(u.creadoEn),
+        ]))
+      : el('p', 'mg-vacio', todos.length ? 'Ningún usuario coincide con tu búsqueda.' : 'Aún no hay usuarios registrados.'));
+  };
+
+  const cargar = async () => {
+    lista.replaceChildren(el('p', 'mg-vacio', 'Cargando usuarios…'));
+    const r = await Cuentas.listarUsuarios();
+    if (r.error) { lista.replaceChildren(el('p', 'mg-vacio', r.error)); conteo.textContent = ''; return; }
+    todos = r.usuarios;
+    pintar();
+  };
+
+  // Buscador
+  const caja = el('div', 'input-group');
+  const buscador = el('input', 'form-control form-control-lg');
+  buscador.type = 'search';
+  buscador.placeholder = 'Buscar por nombre, correo, código o plan…';
+  buscador.setAttribute('aria-label', 'Buscar usuarios');
+  buscador.autocomplete = 'off';
+  buscador.value = busqueda;
+  buscador.addEventListener('input', () => { busqueda = buscador.value; pintar(); });
+  const limpiar = btn('Limpiar', 'btn-outline-primary', () => { busqueda = ''; buscador.value = ''; pintar(); buscador.focus(); });
+  caja.append(buscador, limpiar);
+
+  // Filtro por tipo y botón de actualizar
+  const rol = selector('rol', 'Tipo de usuario', [['todos', 'Todos'], ...ROLES_VISIBLES.map((k) => [k, ROLES_TXT[k]])], filtroRol);
+  rol.querySelector('select').addEventListener('change', (e) => { filtroRol = e.target.value; pintar(); });
+  const fila = el('div', 'ad-form');
+  fila.append(rol, btn('Actualizar lista', 'btn-outline-primary', cargar));
+
+  cargar();
+  setTimeout(() => buscador.focus(), 0);
+  return tarjeta(el('h2', '', 'Usuarios registrados'), caja, fila, conteo, lista);
+}
+
 
 // ===== Navegación =====
 const SECCIONES = {
-  socios: ['Socios', 'bi-people-fill', vistaSocios], instructores: ['Instructores', 'bi-person-badge-fill', vistaInstructores],
-  salones: ['Salones', 'bi-door-open-fill', vistaSalones], fallas: ['Fallas', 'bi-tools', vistaFallas],
-  inventario: ['Inventario', 'bi-box-seam-fill', vistaInventario], contabilidad: ['Contabilidad', 'bi-cash-coin', vistaContabilidad],
+  socios: ['Socios', 'bi-people-fill', vistaSocios], 
+  usuarios: ['Usuarios', 'bi-person-lines-fill', vistaUsuarios],
+  instructores: ['Instructores', 'bi-person-badge-fill', vistaInstructores],
+  salones: ['Salones', 'bi-door-open-fill', vistaSalones], 
+  fallas: ['Fallas', 'bi-tools', vistaFallas],
+  inventario: ['Inventario', 'bi-box-seam-fill', vistaInventario], 
+  contabilidad: ['Contabilidad', 'bi-cash-coin', vistaContabilidad],
 };
 // Solo las secciones que el rol puede ver
 const PERMITIDAS = Object.keys(SECCIONES).filter((k) => !PERMISOS[ROL] || PERMISOS[ROL].includes(k));
 function vistaActual() {
-  const k = PERMITIDAS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'socios';
+  const k = PERMITIDAS.includes(location.hash.slice(1)) ? location.hash.slice(1) : PERMITIDAS[0];
   document.querySelectorAll('.mg-link').forEach((a) => a.classList.toggle('activo', a.dataset.seccion === k));
   $('#vista').replaceChildren(SECCIONES[k][2]());
 }
+if (ROL === 'administrador') revisarVencimientos();
+vistaActual();
+
 const nav = $('#ad-nav');
 PERMITIDAS.forEach((k) => { const [t, i] = SECCIONES[k]; const a = el('a', 'mg-link'); a.href = '#' + k; a.dataset.seccion = k; a.append(el('i', 'bi ' + i), el('span', '', t)); nav.append(a); });
 const salir = el('a', 'btn btn-primary mg-salir', 'Cerrar sesión'); salir.href = 'index.html'; salir.setAttribute('data-salir', ''); nav.append(salir);
