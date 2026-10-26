@@ -98,4 +98,61 @@ function configurarLogin(menu) {
   });
 }
 
-configurarLogin(configurarMenu());
+// Horarios y Contáctanos (ventanas emergentes)
+const HORARIOS = {
+  'Lunes': [
+    ['07:00 – 08:00', 'Circuito funcional', 'Diego Hernández', 'Salón funcional'],
+    ['18:00 – 19:00', 'Yoga para principiantes', 'Sofía Medina', 'Salón de yoga'],
+  ],
+  'Martes': [
+    ['07:00 – 08:00', 'Entrenamiento por parejas', 'Diego Hernández', 'Salón funcional'],
+    ['19:00 – 20:00', 'Zumba', 'Sofía Medina', 'Salón de baile'],
+  ],
+  'Miércoles': [
+    ['07:00 – 08:00', 'Circuito funcional', 'Diego Hernández', 'Salón funcional'],
+    ['18:00 – 19:00', 'Yoga para principiantes', 'Sofía Medina', 'Salón de yoga'],
+  ],
+  'Jueves': [
+    ['07:00 – 08:00', 'Entrenamiento por parejas', 'Diego Hernández', 'Salón funcional'],
+    ['19:00 – 20:00', 'Zumba', 'Sofía Medina', 'Salón de baile'],
+  ],
+  'Viernes': [
+    ['07:00 – 08:00', 'Circuito funcional', 'Diego Hernández', 'Salón funcional'],
+    ['18:00 – 19:00', 'Yoga para principiantes', 'Sofía Medina', 'Salón de yoga'],
+  ],
+  'Sábado': [
+    ['09:00 – 10:00', 'Circuito funcional', 'Diego Hernández', 'Salón funcional'],
+    ['10:30 – 11:30', 'Zumba', 'Sofía Medina', 'Salón de baile'],
+  ],
+};
+
+function configurarInfo(menu) {
+  const tabla = document.getElementById('horariosTabla');
+  Object.entries(HORARIOS).forEach(([dia, clases]) => {
+    clases.forEach((c, i) => {
+      const tr = document.createElement('tr');
+      const celdas = [i === 0 ? dia : '', ...c];
+      celdas.forEach((texto, n) => {
+        const td = document.createElement('td');
+        td.textContent = texto;
+        if (n === 0) td.className = 'fw-semibold';
+        if (n === 1) td.className = 'text-success fw-semibold';
+        tr.appendChild(td);
+      });
+      tabla.appendChild(tr);
+    });
+  });
+
+  const abrir = (idBoton, idModal) => {
+    document.getElementById(idBoton).addEventListener('click', () => {
+      menu.hide();
+      bootstrap.Modal.getOrCreateInstance(document.getElementById(idModal)).show();
+    });
+  };
+  abrir('Horarios', 'horariosModal');
+  abrir('Contactanos', 'contactoModal');
+}
+
+const menuLateral = configurarMenu();
+configurarLogin(menuLateral);
+configurarInfo(menuLateral);
