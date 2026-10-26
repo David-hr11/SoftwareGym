@@ -39,8 +39,9 @@
             <button class="btn btn-primary w-100" type="button" id="Horarios">Horarios</button>
             <p class="form-text mt-2 mb-0">Cronograma de horarios para clases.</p>
           </li>
-           <li class="nav-item">
-            <button class="btn btn-primary w-100" type="button" id="Contactanos">Contactanos</button>
+          <li class="nav-item">
+            <button class="btn btn-primary w-100" type="button" id="Contactanos">Contáctanos</button>
+            <p class="form-text mt-2 mb-0">Resuelve tus dudas con nosotros.</p>
           </li>
           <li class="nav-item">
             <a href="inscripcion.html" class="btn btn-primary w-100" id="Inscribirse">Inscríbete</a>
@@ -223,6 +224,52 @@
             <button type="button" class="btn btn-link" id="loginCambiar"></button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horarios de clases -->
+  <div class="modal fade" id="horariosModal" tabindex="-1" aria-labelledby="horariosTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title" id="horariosTitulo">Horarios de clases</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-body-secondary">Clases grupales de la semana.</p>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead><tr><th>Día</th><th>Hora</th><th>Clase</th><th>Instructor</th><th>Salón</th></tr></thead>
+              <tbody id="horariosTabla"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contáctanos -->
+  <div class="modal fade" id="contactoModal" tabindex="-1" aria-labelledby="contactoTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title" id="contactoTitulo">Contáctanos</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-body-secondary">¿Dudas sobre planes, pagos o clases? Escríbenos o llámanos.</p>
+          <dl class="mb-0">
+            <dt class="text-body-secondary fw-normal">Teléfono</dt>
+            <dd><a href="tel:+525500000000">55 0000 0000</a></dd>
+            <dt class="text-body-secondary fw-normal">Correo</dt>
+            <dd><a href="mailto:contacto@pulsogym.com">contacto@pulsogym.com</a></dd>
+            <dt class="text-body-secondary fw-normal">Dirección</dt>
+            <dd>Calle Aragón 123, CDMX</dd>
+            <dt class="text-body-secondary fw-normal">Horario de atención</dt>
+            <dd class="mb-0">Lunes a viernes de 6:00 a 22:00<br>Sábados de 8:00 a 14:00</dd>
+          </dl>
+        </div>
       </div>
     </div>
   </div>
