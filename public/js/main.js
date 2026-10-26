@@ -4,24 +4,20 @@ function avisar(mensaje) {
   bootstrap.Toast.getOrCreateInstance(document.getElementById('toast'), { delay: 2500 }).show();
 }
 
-// Menú lateral derecho:
-// - Al entrar se muestra solo (si la pantalla es ancha).
-// - Al hacer scroll se esconde.
-// - Después solo se abre con el botón de hamburguesa.
+// Menú lateral derecho
 function configurarMenu() {
   const panel = document.getElementById('menuLateral');
   const boton = document.getElementById('btnMenu');
   const menu = bootstrap.Offcanvas.getOrCreateInstance(panel);
-  const UMBRAL_SCROLL = 40;      // píxeles de scroll para esconderlo
-  const ANCHO_MINIMO = 992;      // en celular/tablet empieza cerrado
-  let abiertoSolo = false;       // true = lo abrió la página, no la persona
+  const UMBRAL_SCROLL = 40;
+  const ANCHO_MINIMO = 992;
+  let abiertoSolo = false;
 
   if (window.innerWidth >= ANCHO_MINIMO) {
     abiertoSolo = true;
     menu.show();
   }
 
-  // Si la persona lo abre con el botón, ya no se esconde con el scroll
   boton.addEventListener('click', () => { abiertoSolo = false; });
   panel.addEventListener('hide.bs.offcanvas', () => { abiertoSolo = false; });
 
@@ -35,7 +31,7 @@ function configurarMenu() {
   return menu;
 }
 
-// Inicio de sesión y registro: el tipo de cuenta lo decide el sistema, no la persona
+// Inicio de sesión y registro
 function configurarLogin(menu) {
   const form = document.getElementById('loginForm');
   const modalEl = document.getElementById('loginModal');
@@ -64,11 +60,16 @@ function configurarLogin(menu) {
   $('btnLogin').addEventListener('click', async () => {
     menu.hide();
     const ir = Cuentas.sesion() ? Cuentas.destino() : await Cuentas.restaurar();
-    if (ir) { location.href = ir; return; } // ya había sesión: va directo a su panel
+    if (ir) { location.href = ir; return; }
     modo(false);
     modal.show();
   });
-  $('loginCambiar').addEventListener('click', () => modo(!registro));
+  
+  // Redirige al flujo de inscripción completo
+  $('loginCambiar').addEventListener('click', () => {
+    window.location.href = 'inscripcion.html';
+  });
+  
   modalEl.addEventListener('hidden.bs.modal', () => { form.reset(); modo(false); });
 
   form.addEventListener('submit', async (e) => {
@@ -87,7 +88,7 @@ function configurarLogin(menu) {
         ? await Cuentas.registrarSocio({ nombre: $('loginNombre').value, correo, pass })
         : await Cuentas.iniciarSesion(correo, pass);
       if (r.error) { error.textContent = r.error; error.hidden = false; return; }
-      location.href = r.destino; // socio y entrenador → mygym.html · administrador y recepción → admin.html
+      location.href = r.destino;
     } catch {
       error.textContent = 'No se pudo completar. Abre el sitio desde localhost o https e inténtalo de nuevo.';
       error.hidden = false;

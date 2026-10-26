@@ -1,5 +1,4 @@
 // ===== Cuentas con Firebase Authentication + Firestore =====
-// Es la única pieza que habla con Firebase para las cuentas. El resto de las páginas sigue usando Cuentas.*
 const FIREBASE_VERSION = '13.1.0';
 const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyBvV1KFSereG75XTptMNwHzeqBHLtyQD3E',
@@ -29,7 +28,6 @@ const Cuentas = (() => {
   const mensaje = (e) => MENSAJES[e?.code] || 'No se pudo completar. Inténtalo de nuevo.';
   const dig = (n) => String(Math.floor(Math.random() * 10 ** n)).padStart(n, '0');
 
-  // Carga Firebase una sola vez, solo cuando hace falta
   let cargado = null;
   function cargarFirebase() {
     cargado ??= (async () => {
@@ -42,14 +40,13 @@ const Cuentas = (() => {
     return cargado;
   }
 
-  // ----- Sesión de esta pestaña (copia del perfil para que las páginas la lean al instante) -----
   const sesion = () => { try { return JSON.parse(sessionStorage.getItem(SESION)); } catch { return null; } };
   const destino = () => DESTINOS[sesion()?.rol];
 
   function guardarSesion(uid, perfil) {
     const s = { id: uid, ...perfil };
     sessionStorage.setItem(SESION, JSON.stringify(s));
-    sessionStorage.setItem('rol', s.rol); // compatibilidad con admin.js y entrenador.js
+    sessionStorage.setItem('rol', s.rol);
     if (s.instructorId) sessionStorage.setItem('instructorId', s.instructorId);
     else sessionStorage.removeItem('instructorId');
   }
@@ -62,8 +59,6 @@ const Cuentas = (() => {
     return snap.exists() ? snap.data() : null;
   }
 
-  // ----- Páginas protegidas -----
-  // Confirma con Firebase que la sesión sigue abierta; si se cerró (aquí o en otra pestaña), regresa al inicio
   async function verificar() {
     try {
       const F = await cargarFirebase();
@@ -71,10 +66,9 @@ const Cuentas = (() => {
       const salir = () => { limpiarSesion(); location.replace('index.html'); };
       if (!F.auth.currentUser || F.auth.currentUser.uid !== sesion()?.id) return salir();
       F.onAuthStateChanged(F.auth, (u) => { if (!u) salir(); });
-    } catch { /* sin conexión: se mantiene la sesión local */ }
+    } catch { }
   }
 
-  // Úsalo al inicio de cada página protegida
   function exigir(roles) {
     const s = sesion();
     if (!s) location.replace('index.html');
@@ -83,7 +77,6 @@ const Cuentas = (() => {
     return s;
   }
 
-  // ¿Firebase ya tiene una sesión abierta en este navegador? Reconstruye la sesión de la pestaña
   async function restaurar() {
     try {
       const F = await cargarFirebase();
@@ -97,7 +90,6 @@ const Cuentas = (() => {
     } catch { return null; }
   }
 
-  // ----- Entrar, registrarse, salir -----
   async function iniciarSesion(correo, pass) {
     try {
       const F = await cargarFirebase();
@@ -112,30 +104,42 @@ const Cuentas = (() => {
     } catch (e) { return { error: mensaje(e) }; }
   }
 
-  // El tipo de cuenta lo asigna el sistema: el registro público SOLO crea socios (y las reglas de Firestore lo exigen)
-  async function registrarSocio({ nombre, correo, pass }) {
+  async function registrarSocio({ nombre, correo, pass, plan, contratoAceptado }) {
     if (nombre.trim().length < 3) return { error: 'Escribe tu nombre completo.' };
+    
+    if (!plan || !contratoAceptado) return { error: 'Debes completar todos los pasos de la inscripción.' };
+
     let F;
     let user = null;
     try {
       F = await cargarFirebase();
       user = (await F.createUserWithEmailAndPassword(F.auth, correo.trim(), pass)).user;
-      const datos = { nombre: nombre.trim(), correo: user.email, rol: 'socio', codigo: 'PG-' + dig(6), codigoBarras: `${dig(4)} ${dig(4)} ${dig(4)}` };
+      
+      const datos = { 
+        nombre: nombre.trim(), 
+        correo: user.email, 
+        rol: 'socio', 
+        codigo: 'PG-' + dig(6), 
+        codigoBarras: `${dig(4)} ${dig(4)} ${dig(4)}`,
+        plan: plan,
+        contratoAceptado: contratoAceptado,
+        estatusPago: 'Activo'
+      };
+      
       await F.setDoc(F.doc(F.db, 'usuarios', user.uid), { ...datos, creadoEn: F.serverTimestamp() });
       guardarSesion(user.uid, datos);
       return { destino: DESTINOS.socio };
     } catch (e) {
-      if (user) await F.deleteUser(user).catch(() => {}); // sin perfil no se deja la cuenta a medias
+      if (user) await F.deleteUser(user).catch(() => {}); 
       return { error: mensaje(e) };
     }
   }
 
   async function cerrarSesion() {
     limpiarSesion();
-    try { const F = await cargarFirebase(); await F.signOut(F.auth); } catch { /* sin conexión: ya se limpió la sesión local */ }
+    try { const F = await cargarFirebase(); await F.signOut(F.auth); } catch { }
   }
 
-  // Enlaces con data-salir: se cierra la sesión de Firebase ANTES de navegar
   document.addEventListener('click', async (e) => {
     const enlace = e.target.closest('[data-salir]');
     if (!enlace) return;
